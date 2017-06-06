@@ -2,8 +2,6 @@
 	'use strict';
 
 	// Your starting point. Enjoy the ride!
-
-
 	var listHelper = '<li class="%completed%"><div class="view"><input class="toggle" type="checkbox" %checked%><label>%todo%</label><button class="destroy"></button></div><input class="edit" value="Create a TodoMVC template"></li>';
 	var todoList = $('.todo-list');
 	var selectResult = [];
@@ -175,8 +173,6 @@
 
 	// 초기 데이터를 불러오고 이벤트들을 셋함
 	selectByFilter(null);
-
-
 
 	// new -todo enter event
 	$('.new-todo').keydown(function(key) {
