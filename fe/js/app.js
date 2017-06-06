@@ -119,46 +119,62 @@
 	}
 
 
+	function selectByFilter(filter)
+	{
+		var selectUrl = 'http://localhost:8080/api/todos';
 
-	// 초기 데이터를 불러오고 이벤트들을 셋함
-	$.ajax({
-		method:'GET',
-		url:'http://localhost:8080/api/todos',
-		dataType:'jsonp',
-		success:function(response) //select 요청이 성공하면 화면에 뿌려준다.
+		if (filter ==='Active')
 		{
-			selectResult = response;
-			for(var i=0;i<selectResult.length;i++)
-			{
-				var completed = selectResult[i].completed;
-				var list = listHelper.replace('%todo%',selectResult[i].todo);
-				if(completed==0)
-				{
-					list = list.replace('%completed%','view');
-					list = list.replace('%checked%','');
-				}
-				else if(completed==1)
-				{
-					list=list.replace('%completed%','completed');
-					list = list.replace('%checked%','checked');
-				}
-
-				todoList.append(list);
-			}
-			$('.toggle').click(toggleHandler);
-			$('.destroy').click(deleteHandler);
-			$('.clear-completed').click(clearHandler);
-
-			initItemNumber();
-			showItemCount(remainItem);
-
-		},
-		error:function(xhr,status,error)
+			selectUrl+='/0';
+		}
+		else if(filter ==='Completed')
 		{
-			console.log(error);
+			selectUrl+='/1';
 		}
 
-	});
+		$.ajax({
+			method:'GET',
+			url:selectUrl,
+			dataType:'jsonp',
+			success:function(response) //select 요청이 성공하면 화면에 뿌려준다.
+			{
+				selectResult = response;
+				for(var i=0;i<selectResult.length;i++)
+				{
+					var completed = selectResult[i].completed;
+					var list = listHelper.replace('%todo%',selectResult[i].todo);
+					if(completed==0)
+					{
+						list = list.replace('%completed%','view');
+						list = list.replace('%checked%','');
+					}
+					else if(completed==1)
+					{
+						list=list.replace('%completed%','completed');
+						list = list.replace('%checked%','checked');
+					}
+
+					todoList.append(list);
+				}
+				$('.toggle').click(toggleHandler);
+				$('.destroy').click(deleteHandler);
+				$('.clear-completed').click(clearHandler);
+
+				initItemNumber();
+				showItemCount(remainItem);
+
+			},
+			error:function(xhr,status,error)
+			{
+				console.log(error);
+			}
+
+		});
+
+	}
+
+	// 초기 데이터를 불러오고 이벤트들을 셋함
+	selectByFilter(null);
 
 
 
@@ -206,11 +222,6 @@
 		}
 	});
 
-
-
-
-
-
 	/////////////////////////////////////////
 	//////////////////////////////////////////
 	/////////////////////////////////////////
@@ -226,139 +237,20 @@
  		if(selected === 'All')
  		{
  			todoList.children().remove();
-
-			$.ajax({
-				method:'GET',
-				url:'http://localhost:8080/api/todos',
-				dataType:'jsonp',
-				success:function(response) //select 요청이 성공하면 화면에 뿌려준다.
-				{
-					selectResult = response;
-					for(var i=0;i<selectResult.length;i++)
-					{
-						var completed = selectResult[i].completed;
-						var list = listHelper.replace('%todo%',selectResult[i].todo);
-						if(completed==0)
-						{
-							list = list.replace('%completed%','view');
-							list = list.replace('%checked%','');
-						}
-						else if(completed==1)
-						{
-							list=list.replace('%completed%','completed');
-							list = list.replace('%checked%','checked');
-						}
-
-						todoList.append(list);
-					}
-					$('.toggle').click(toggleHandler);
-					$('.destroy').click(deleteHandler);
-					$('.clear-completed').click(clearHandler);
-
-					initItemNumber();
-					showItemCount(remainItem);
-
-				},
-				error:function(xhr,status,error)
-				{
-					console.log(error);
-				}
-
-			});
-
+			selectByFilter(null);
  		}
  		else if(selected === 'Active')
  		{
  			todoList.children().remove();
-
-			$.ajax({
-				method:'GET',
-				url:'http://localhost:8080/api/todos/0',
-				dataType:'jsonp',
-				success:function(response) //select 요청이 성공하면 화면에 뿌려준다.
-				{
-					selectResult = response;
-					for(var i=0;i<selectResult.length;i++)
-					{
-						var completed = selectResult[i].completed;
-						var list = listHelper.replace('%todo%',selectResult[i].todo);
-						if(completed==0)
-						{
-							list = list.replace('%completed%','view');
-							list = list.replace('%checked%','');
-						}
-						else if(completed==1)
-						{
-							list=list.replace('%completed%','completed');
-							list = list.replace('%checked%','checked');
-						}
-
-						todoList.append(list);
-					}
-					$('.toggle').click(toggleHandler);
-					$('.destroy').click(deleteHandler);
-					$('.clear-completed').click(clearHandler);
-
-					initItemNumber();
-					showItemCount(remainItem);
-
-				},
-				error:function(xhr,status,error)
-				{
-					console.log(error);
-				}
-
-			});
+			selectByFilter('Active');
 
  		}
  		else if(selected === 'Completed')
  		{
  			todoList.children().remove();
-			$.ajax({
-				method:'GET',
-				url:'http://localhost:8080/api/todos/1',
-				dataType:'jsonp',
-				success:function(response) //select 요청이 성공하면 화면에 뿌려준다.
-				{
-					selectResult = response;
-					for(var i=0;i<selectResult.length;i++)
-					{
-						var completed = selectResult[i].completed;
-						var list = listHelper.replace('%todo%',selectResult[i].todo);
-						if(completed==0)
-						{
-							list = list.replace('%completed%','view');
-							list = list.replace('%checked%','');
-						}
-						else if(completed==1)
-						{
-							list=list.replace('%completed%','completed');
-							list = list.replace('%checked%','checked');
-						}
-
-						todoList.append(list);
-					}
-					$('.toggle').click(toggleHandler);
-					$('.destroy').click(deleteHandler);
-					$('.clear-completed').click(clearHandler);
-
-					initItemNumber();
-					showItemCount(remainItem);
-
-				},
-				error:function(xhr,status,error)
-				{
-					console.log(error);
-				}
-
-			});
+			selectByFilter('Completed');
  		}
 
  	});
-
-
-
-
-
 
 })(window);
